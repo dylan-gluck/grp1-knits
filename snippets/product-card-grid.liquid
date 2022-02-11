@@ -1,0 +1,8 @@
+<a href="{{ product.url | within: collection }}" class="grp-collections__item grid-3">
+  <div class="inner" style="background-image: url('{{ product.featured_image | img_url: '1024x1024' }}');"></div>
+  <div class="product-description">
+    <h5>{{ product.title }}</h5>
+    <p class="description">{{ product.description | strip_html | truncate: 80 }}</p>
+    <p>Sizes XXS - L</p>
+  </div>
+</a>

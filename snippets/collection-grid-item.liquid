@@ -1,0 +1,13 @@
+{% if collection.image %}
+  {%- assign collection_image = collection.image -%}
+{% elsif collection.products.first and collection.products.first.images != empty %}
+  {%- assign collection_image = collection.products.first.featured_image -%}
+{% else %}
+  {% assign collection_image = blank %}
+{% endif %}
+
+<a href="{% if collection.products == empty %}#{% else %}{{ collection.url }}{% endif %}" class="grp-collections__item grid-2">
+  <div class="inner" style="background-image: url('{{ collection_image | img_url: '1024x1024' }}');">
+    <h3>{{ collection.title }}</h3>
+  </div>
+</a>

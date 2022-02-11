@@ -1,0 +1,214 @@
+{% if customer  %}
+
+  <section class="grp-wrap grp-product grp-product--customer">
+    <div class="grp-product__container grp-container">
+      <div class="grp-product-image">
+        {%- assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+        <div class="grp-product-image__zoom" style="background-image:url({{featured_image | img_url: '1024x' }});" data-zoom="{{featured_image | img_url: '2048x' }}"><div class="inner"></div></div>
+        <div class="grp-product-image__thumbs">
+          {% for image in product.images %}
+            <div class="thumbnail" data-url="{{image.src | img_url: '2048x' }}" style="background-image:url({{image.src | img_url: '500x' }});"><div class="inner"></div></div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="grp-product-form">
+        <h3>{{ product.title }}</h3>
+        <div class="grp-mobile-image">
+          {%- assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+          <div class="grp-mobile-image__canvas" style="background-image:url({{featured_image | img_url: '1024x' }});"><div class="inner"></div></div>
+          <div class="grp-mobile-image__thumbs">
+            {% for image in product.images %}
+              <div class="thumbnail" data-url="{{image.src | img_url: '1024x' }}" style="background-image:url({{image.src | img_url: '500x' }});"><div class="inner"></div></div>
+              <script>
+                function preloadImage(url) {
+                  var img = new Image();
+                  img.src = url;
+                }
+                preloadImage("{{image.src | img_url: '1024x' }}");
+              </script>
+            {% endfor %}
+          </div>
+        </div>
+
+        {{ product.description }}
+
+        <p>
+          100% Cotton<br /><br />
+          <strong>Unit Price:</strong> {{product.price | money}}<br />
+          <strong>MSRP:</strong> {{product.compare_at_price | money}}<br />
+        </p>
+
+        <div class="loading" style="display:none">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+
+        <p class="success" style="display:none">Items added to cart.</p>
+
+        <table class="order-form">
+          <tr>
+            <td class="no-border"></td>
+            <th scope="col">XXS</th>
+            <th scope="col">XS</th>
+            <th scope="col">S</th>
+            <th scope="col">M</th>
+            <th scope="col">L</th>
+          </tr>
+          {%- assign color_options = product.options_with_values[0] -%}
+          {% for value in color_options.values %}
+            <tr>
+              <th scope="row">{{value | escape}}</th>
+              <td><input type="number" name="{{value | escape}}-XXS" value="0" data-color="{{value | escape}}" data-size="xxs"></input></td>
+              <td><input type="number" name="{{value | escape}}-XS" value="0" data-color="{{value | escape}}" data-size="xs"></input></td>
+              <td><input type="number" name="{{value | escape}}-S" value="0" data-color="{{value | escape}}" data-size="s"></input></td>
+              <td><input type="number" name="{{value | escape}}-M" value="0" data-color="{{value | escape}}" data-size="m"></input></td>
+              <td><input type="number" name="{{value | escape}}-L" value="0" data-color="{{value | escape}}" data-size="l"></input></td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td class="no-border"></td>
+            <td class="no-border size-chart-link" colspan="5"><a href="#size_chart" class="grp-size-chart-link">View Size Chart</a></td>
+          </tr>
+        </table>
+
+        {% assign product_collection = product.collections.first %}
+        <div class="remodal grp-size-chart" data-remodal-id="size_chart">
+          <h3 class="grp-size-chart__title">Size Chart</h3>
+          <img class="grp-size-chart__img" src="{{ 'size-chart.png' | asset_url }}" />
+          <button data-remodal-action="close" class="remodal-confirm grp-size-chart__close">Close</button>
+        </div>
+
+        <a href="javascript:void(0)" class="grp-product__submit" id="product-add-to-cart">Add To Cart</a>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+
+    // Get Product Variants
+    var productVariants;
+    $.get('/products/{{product.handle}}.js').always(function( data ) {
+      var dataJSON = JSON.parse(data.responseText);
+      productVariants = dataJSON.variants;
+    });
+
+    // Search Array
+    function searchVariants(nameKey1, nameKey2, myArray){
+      for (var i=0; i < myArray.length; i++) {
+        if ( myArray[i].option1.toLowerCase() === nameKey1.toLowerCase() && myArray[i].option2.toLowerCase() === nameKey2.toLowerCase() ) {
+          return myArray[i].id;
+        } else if ( myArray[i].option2.toLowerCase() === nameKey1.toLowerCase() && myArray[i].option1.toLowerCase() === nameKey2.toLowerCase() ) {
+          return myArray[i].id;
+        }
+      }
+    }
+
+    // Create a new Shopify.addItem function
+    Shopify.addItem = function(id, qty, callback) {
+      var params = {
+        quantity: qty,
+        id: id
+      };
+      $.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        dataType: 'json',
+        data: params,
+        success: function(){
+          if(typeof callback === 'function'){
+            callback();
+          }
+        },
+        error: function(data){
+          console.log('Error with submission');
+          console.log(data);
+        }
+      });
+    }
+
+    // Add To Cart
+    var selectedItems = [];
+    var $addToCartButton = $('#product-add-to-cart');
+    var $variationInputs = $('.order-form input');
+    var $orderForm = $('.order-form');
+    var $loading = $('.loading');
+    var $success = $('.success');
+
+    $addToCartButton.click(function(){
+
+      $orderForm.hide();
+      $addToCartButton.hide();
+      $loading.show();
+
+      selectedItems = [];
+      $variationInputs.each(function(i, el){
+        var $input = $(el);
+        var name = $input.attr('name');
+        var color = $input.data('color');
+        var size = $input.data('size');
+        var val = Number($input.val());
+
+        if (val > 0) {
+          selectedItems.push({
+            id: searchVariants(color, size, productVariants),
+            val: val
+          });
+        }
+      });
+
+      // Add each variant to queue
+      Shopify.queue = [];
+      $.each(selectedItems, function(i, item) {
+        Shopify.queue.push({
+          variantId: item.id,
+          quantity: item.val
+        });
+      });
+
+      // Add Items to Cart
+      var i = 0;
+      Shopify.moveAlong = function() {
+        // If we still have requests in the queue, let's process the next one.
+        if (Shopify.queue.length) {
+          var request = Shopify.queue.shift();
+          Shopify.addItem(request.variantId, request.quantity, Shopify.moveAlong);
+        } else {
+          // Success
+          afterAddedToCart();
+        }
+        i++;
+      };
+      Shopify.moveAlong();
+
+    });
+
+    // After Add To Cart
+    // Show message, reset form
+    function afterAddedToCart() {
+      $loading.hide();
+      $success.fadeIn();
+      $orderForm.find('input[type=number]').val('0');
+      $orderForm.delay(2000).fadeIn();
+      $addToCartButton.delay(2000).fadeIn();
+    }
+
+  </script>
+
+{% else %}
+
+  <section class="grp-wrap grp-product grp-product--guest">
+    <div class="grp-page-header">
+      <div class="grp-container grp-container--narrow">
+        <h3>{{ product.title }}</h3>
+        <p>{{ product.description }}</p>
+      </div>
+    </div>
+    <div class="grp-collections__grid grp-container">
+      {% for image in product.images %}
+        <img src="{{image.src | img_url: '1024x' }});" />
+      {% endfor %}
+    </div>
+  </section>
+  {% include 'up-next', un_title: 'Store Locator', un_link: '/pages/store-locator' %}
+
+{% endif %}

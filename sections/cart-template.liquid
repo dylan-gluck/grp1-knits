@@ -1,0 +1,283 @@
+<section class="grp-wrap grp-cart">
+  <div class="grp-cart__container grp-container grp-container--narrow">
+
+    {% if cart.item_count > 0 %}
+      <div class="grp-page-header">
+        <h3>Items</h3>
+      </div>
+      <div class="grp-cart__breakdown"></div>
+
+      <script>
+        var cartTotal;
+        var cartItems;
+        var itemTotals = {
+          tops: {
+            id: 'tops',
+            quant: 0
+          },
+          dresses: {
+            id: 'dresses',
+            quant: 0
+          },
+          skirts: {
+            id: 'skirts',
+            quant: 0
+          },
+          pants: {
+            id: 'pants',
+            quant: 0
+          },
+          jackets: {
+            id: 'jackets',
+            quant: 0
+          },
+          accessories: {
+            id: 'accessories',
+            quant: 0
+          }
+        }
+
+        function updateTotalsView() {
+
+          // Clear Breakdown
+          $('.grp-cart__breakdown').html('');
+
+          // Get Value of itemTotals Object as Array
+          var itemTotalsArray = Object.values(itemTotals);
+
+          // Loop through each total
+          $.each(itemTotalsArray, function(i, category){
+
+            var percent = Math.round(category.quant / cartTotal * 100);
+
+            var markup = '<div class="grp-cart__category"><h4 class="category-title">'+ category.id +'</h4><h4 class="total-percent">'+ percent +'%</h4></div>'
+
+            $('.grp-cart__breakdown').append(markup);
+
+          });
+        }
+
+        $(document).ready(function() {
+
+          // Get Cart Total & Items
+          $.get('/cart.js').always(function(data){
+            var dataJSON = JSON.parse(data.responseText);
+            cartTotal = dataJSON.item_count;
+            cartItems = dataJSON.items;
+
+            // Loop through each item
+            // Get cetegory & quant add it to totals
+            $.each(cartItems, function(i, item){
+
+              var thisCat;
+              var thisQuant = item.quantity;
+
+              // Get Product Info -> Get Cat
+              $.get('/products/'+ item.handle +'.js').always(function(data){
+                var dataJSON = JSON.parse(data.responseText);
+                thisCat = dataJSON.tags[0].toLowerCase();
+
+                // Update Totals
+                itemTotals[thisCat].quant += thisQuant;
+
+                if (i == cartItems.length - 1) {
+                  // Function To Update view
+                  updateTotalsView();
+                }
+
+              });
+
+            });
+
+          });
+
+        });
+      </script>
+
+      <form action="/cart" method="post" novalidate class="cart">
+        <!-- <div class="grp-cart__top-submit">
+          <input type="submit" name="checkout" class="grp-cart__submit" value="{{ 'cart.general.checkout' | t }}">
+        </div> -->
+
+        <!-- <div class="grp-page-header">
+          <h3>Items</h3>
+        </div> -->
+        <table class="grp-cart__list">
+          <thead class="cart__row">
+            <th scope="col">{{ 'cart.label.product' | t }}</th>
+            <th class="cart__row-price" scope="col">{{ 'cart.label.price' | t }}</th>
+            <th class="text-center small--hide" scope="col">{{ 'cart.label.quantity' | t }}</th>
+            <th class="text-right small--hide" scope="col">{{ 'cart.label.total' | t }}</th>
+          </thead>
+          <tbody>
+            {% for item in cart.items %}
+              <tr class="cart__row border-bottom line{{ forloop.index }}{% if forloop.first %} border-top{% endif %}">
+                <td class="cart__meta small--text-left">
+                  <div class="list-view-item__title">
+                    <a href="{{ item.url }}">
+                      {{ item.product.title }}
+                    </a>
+                  </div>
+                  {% unless item.variant.title contains 'Default' %}
+                    <div class="cart__meta-text">
+                      {% for option in item.product.options %}
+                        {{ option }}: {{ item.variant.options[forloop.index0] }}<br/>
+                      {% endfor %}
+                    </div>
+                  {% endunless %}
+
+                  {% comment %}
+                    Optional, loop through custom product line items if available
+
+                    Line item properties come in as having two parts. The first part will be passed with the default form,
+                    but p.last is the actual custom property and may be blank. If it is, don't show it.
+
+                    For more info on line item properties, visit:
+                      - http://docs.shopify.com/support/your-store/products/how-do-I-collect-additional-information-on-the-product-page-Like-for-a-monogram-engraving-or-customization
+                  {% endcomment %}
+                  {%- assign property_size = item.properties | size -%}
+                  {% if property_size > 0 %}
+                    <div class="cart__meta-text">
+                      {% for p in item.properties %}
+                        {% unless p.last == blank %}
+                          {{ p.first }}:
+
+                          {% comment %}
+                            Check if there was an uploaded file associated
+                          {% endcomment %}
+                          {% if p.last contains '/uploads/' %}
+                            <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                          {% else %}
+                            {{ p.last }}
+                          {% endif %}
+                        {% endunless %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+
+                  <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="btn btn--small btn--tertiary cart__remove" aria-label="{{ 'cart.general.remove' | t }} {{ item.product.title }}">{{ 'cart.general.remove' | t }}</a>
+                </td>
+                <td class="cart__price-wrapper">
+                  {{ item.price | money }}
+
+                  {% for discount in item.discounts %}
+                    <div class="cart-item__discount medium-up--hide">{{ discount.title }}</div>
+                  {% endfor %}
+                </td>
+                <td class="text-right small--hide">
+                  <div class="cart__qty">
+                    <label for="updates_large_{{ item.key }}" class="cart__qty-label">{{ 'cart.label.quantity' | t }}</label>
+                    <input class="cart__qty-input" type="number" name="updates[]" id="updates_large_{{ item.key }}" value="{{ item.quantity }}" min="0" pattern="[0-9]*" data-quantity-item="{{ forloop.index }}">
+                  </div>
+                </td>
+                <td class="text-right small--hide">
+                  {% if item.original_line_price != item.line_price %}
+                    <div class="cart-item__original-price"><s>{{ item.original_line_price | money }}</s></div>
+                  {% endif %}
+
+                  <div>
+                    {{ item.line_price | money }}
+                  </div>
+
+                  {% for discount in item.discounts %}
+                    <div class="cart-item__discount">{{ discount.title }}</div>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="grp-cart__footer">
+          {% if section.settings.cart_notes_enable %}
+            <h5 for="CartSpecialInstructions" class="cart-note__label small--text-center">{{ 'cart.general.note' | t }}</h5>
+            <textarea name="note" id="CartSpecialInstructions" class="cart-note__input">{{ cart.note }}</textarea>
+          {% endif %}
+          <div>
+            <span class="cart__subtotal-title">{{ 'cart.general.subtotal' | t }}</span>
+            <span class="cart__subtotal">{{ cart.total_price | money }}</span>
+          </div>
+          {% if cart.total_discounts > 0 %}
+            <div class="grp-cart__savings">
+              {{ 'cart.general.savings' | t }}
+              <span class="cart__savings-amount">{{ cart.total_discounts | money }}</span>
+            </div>
+          {% endif %}
+
+          {%- capture taxes_shipping_checkout -%}
+            {%- if shop.taxes_included and shop.shipping_policy.body != blank -%}
+              {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+            {%- elsif shop.taxes_included -%}
+              {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+            {%- elsif shop.shipping_policy.body != blank -%}
+              {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+            {%- else -%}
+              {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+            {%- endif -%}
+          {%- endcapture -%}
+
+          <div class="grp-cart__shipping rte">{{ taxes_shipping_checkout }}</div>
+
+          <div class="grp-cart__shipping policies">
+            {% for policy in shop.policies %}
+              <a href="{{ policy.url }}">{{policy.title}}</a>
+            {% endfor %}
+          </div>
+
+          <div class="grp-cart__submit-controls">
+            <div class="buttons">
+              <input type="submit" name="checkout"
+                class="grp-cart__submit"
+                value="{{ 'cart.general.checkout' | t }}">
+              <input type="submit" name="update"
+                class="grp-cart__update"
+                value="{{ 'cart.general.update' | t }}">
+            </div>
+            <a href="collections/all" class="grp-btn grp-cart__continue grp-cart__submit-control" >
+              {{ 'cart.general.continue_shopping' | t }}
+            </a>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <div class="grp-container grp-container--narrow">
+        <h3>Your Cart</h3>
+        <p class="cart--empty-message">Looks like you dont have any items in your cart.</p>
+        <a href="/" class="btn btn--has-icon-after cart__continue-btn">{{ 'general.404.link' | t }}{% include 'icon-arrow-right' %}</a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+
+
+{% schema %}
+{
+  "name": {
+    "de": "Warenkorb-Seite",
+    "en": "Cart page",
+    "es": "Página de carrito",
+    "fr": "Page du panier",
+    "it": "Pagina del carrello",
+    "ja": "カートページ",
+    "pt-BR": "Página do carrinho"
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "cart_notes_enable",
+      "label": {
+        "de": "Warenkorb-Notifikationen erlauben",
+        "en": "Enable cart notes",
+        "es": "Habilitar notas de carrito",
+        "fr": "Activer les notes de panier",
+        "it": "Abilita note carrello",
+        "ja": "カートメモを有効にする",
+        "pt-BR": "Ativar observações sobre o carrinho"
+      },
+      "default": false
+    }
+  ]
+}
+{% endschema %}
