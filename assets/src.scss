@@ -637,13 +637,13 @@ EG:
 /*--------------------------------------------------------------
 # General Typography
 --------------------------------------------------------------*/
+
+$font-serif: "PT Serif", serif;
+$font-sans: "Maven Pro", sans-serif;
+
 body {
-  font-family: "Maven Pro", sans-serif;
-  text-rendering: optimizeLegibility;
-  font-smoothing: antialiased;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  cursor: default;
+  font-family: $font-sans;
+  font-smooth: always;
   min-height: 100vh;
 }
 
@@ -658,6 +658,7 @@ html {
 h1 {
   font-size: 5rem;
   font-weight: normal;
+  font-family: $font-serif;
   line-height: 5.5rem;
   color: $black;
   margin-bottom: 10px;
@@ -672,6 +673,7 @@ h1 {
 h2 {
   font-size: 3.8rem;
   font-weight: normal;
+  font-family: $font-serif;
   line-height: 4.5rem;
   color: $black;
   margin-bottom: 4rem;
@@ -694,6 +696,7 @@ h2 {
 h3 {
   font-size: 2.3rem;
   font-weight: 900;
+  font-family: $font-serif;
   line-height: 3.8rem;
   color: $black;
   margin-bottom: 20px;
