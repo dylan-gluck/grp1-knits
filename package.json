@@ -1,0 +1,10 @@
+{
+  "name": "grp1knits",
+  "version": "2.0.0",
+  "description": "GRP1 Knits shopify theme",
+  "scripts": {
+    "watch": "sass --watch assets/src.scss:assets/theme.scss.liquid"
+  },
+  "author": "Dylan Navajas Gluck",
+  "license": "ISC"
+}

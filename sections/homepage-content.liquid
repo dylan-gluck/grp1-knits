@@ -1,8 +1,12 @@
 <section class="grp-coming-soon grp-homepage">
-  <div class="grp-container">
-    <div class="grp-homepage__image">
-      <div class="inner" style="background-image:url({{'homepage-example.jpg' | asset_url }});"></div>
+  <div class="grp-homepage__image">
+    <div class="inner">
+       <video width="100%" height="100%" autoplay muted loop>
+        <source src="{{ "hero.mp4" | asset_url }}" type="video/mp4" />
+      </video>
     </div>
+  </div>
+  <div class="grp-container">
     <div class="grp-homepage__overlay">
       <h2><span>Clothing made for you.</span> Your needs. Your life. Your style.</h2>
 
