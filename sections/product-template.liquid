@@ -204,8 +204,21 @@
       </div>
     </div>
     <div class="grp-collections__grid grp-container">
-      {% for image in product.images %}
-        <img src="{{image.src | img_url: '1024x' }});" />
+      {% for media in product.media %}
+        {% case media.media_type %}
+          {% when 'video' %}
+            <div class="product-media">
+              <div class="inner">
+                {{ media | video_tag: loop: true, autoplay: true, muted: true }}
+              </div>
+            </div>
+          {% when 'image' %}
+            <div class="product-media">
+              <div class="inner">
+                <img src="{{ media | img_url: '1024x' }}" />
+              </div>
+            </div>
+        {% endcase %}
       {% endfor %}
     </div>
   </section>
