@@ -209,7 +209,7 @@
           {% when 'video' %}
             <div class="product-media">
               <div class="inner">
-                {{ media | video_tag: loop: true, autoplay: true, muted: true }}
+                {{ media | video_tag: loop: true, autoplay: true, muted: true, playsinline: true }}
               </div>
             </div>
           {% when 'image' %}
