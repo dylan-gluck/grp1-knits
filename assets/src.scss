@@ -1196,10 +1196,6 @@ body {
 
       .inner {
         padding-top: 150%;
-
-        @media (max-width: $bp-s) {
-          padding-top: 100%;
-        }
       }
 
       @media (max-width: $bp-s) {
@@ -1213,10 +1209,6 @@ body {
 
       .inner {
         padding-top: 150%;
-
-        @media (max-width: $bp-s) {
-          padding-top: 100%;
-        }
       }
 
       @media (max-width: $bp-s) {
