@@ -731,19 +731,23 @@ body {
     padding: 0;
     overflow: hidden;
     display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
   }
   .grp-header__nav a {
     display: block;
     text-align: center;
-    margin: 70px 0;
-    font-size: 22px;
-    color: #fff;
+    margin: 20px auto;
+    font-size: 3vh;
+    color: #666;
   }
   .grp-header__nav a.close {
     display: block;
   }
   .grp-header__nav a:hover, .grp-header__nav a.active {
     font-weight: 900;
+    color: #fff;
   }
 }
 .grp-header__logo {
