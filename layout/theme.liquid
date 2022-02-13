@@ -71,6 +71,7 @@
         <a href="/pages/founder" {% if page.handle == 'founder' %} class="active" {% endif %}>Founder</a>
         <a href="/collections" {% if template contains 'collection' %} class="active" {% endif %} {% if template contains 'product' %} class="active" {% endif %}>Collections</a>
         <a href="/pages/store-locator" {% if template contains 'locator' %} class="active" {% endif %}>Store Locator</a>
+        <a href="/pages/philanthropy" {% if page.handle == 'philanthropy' %} class="active" {% endif %}>Philanthropy</a>
         {% if shop.customer_accounts_enabled %}
           {% if customer  %}
             <a href="/cart" {% if template contains 'cart' %} class="active" {% endif %}>Your Cart ({{cart.item_count}})</a>
