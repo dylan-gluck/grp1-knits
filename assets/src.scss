@@ -740,8 +740,12 @@ p {
     line-height: 2.2rem;
   }
 
+  strong {
+    font-weight: 700;
+  }
+
   a {
-    text-decoration: none;
+    text-decoration: underline;
     color: $black;
     background: transparent;
 
