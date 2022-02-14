@@ -62,29 +62,31 @@
     {% if CFH contains 'admin_bar_iframe' %}
         {% assign admin = true %}
     {% endif %}
-    <a href="javascript:void(0)" class="grp-header__hamburger">
-      <i class="fas fa-bars"></i>
-    </a>
-    <div class="grp-header__nav">
-        {% if admin %}
-          <a href="javascript:void(0)" class="close">
-            <i class="fas fa-times"></i>
-          </a>
-          <a href="/" {% if template == 'index' %} class="active" {% endif %}>Home</a>
-          <a href="/pages/about" {% if page.handle == 'about' %} class="active" {% endif %}>About</a>
-          <a href="/pages/founder" {% if page.handle == 'founder' %} class="active" {% endif %}>Founder</a>
-          <a href="/collections" {% if template contains 'collection' %} class="active" {% endif %} {% if template contains 'product' %} class="active" {% endif %}>Collections</a>
-          <a href="/pages/store-locator" {% if template contains 'locator' %} class="active" {% endif %}>Store Locator</a>
-          <a href="/pages/philanthropy" {% if page.handle == 'philanthropy' %} class="active" {% endif %}>Philanthropy</a>
-          {% if shop.customer_accounts_enabled %}
-            {% if customer  %}
-              <a href="/cart" {% if template contains 'cart' %} class="active" {% endif %}>Your Cart ({{cart.item_count}})</a>
-            {% else %}
-              <a href="/account/login" {% if template contains 'login' %} class="active" {% endif %}>Partner Login</a>
-            {% endif %}
+    {% if admin %}
+      <a href="javascript:void(0)" class="grp-header__hamburger">
+        <i class="fas fa-bars"></i>
+      </a>
+      <div class="grp-header__nav">
+        <a href="javascript:void(0)" class="close">
+          <i class="fas fa-times"></i>
+        </a>
+        <a href="/" {% if template == 'index' %} class="active" {% endif %}>Home</a>
+        <a href="/pages/about" {% if page.handle == 'about' %} class="active" {% endif %}>About</a>
+        <a href="/pages/founder" {% if page.handle == 'founder' %} class="active" {% endif %}>Founder</a>
+        <a href="/collections" {% if template contains 'collection' %} class="active" {% endif %} {% if template contains 'product' %} class="active" {% endif %}>Collections</a>
+        <a href="/pages/store-locator" {% if template contains 'locator' %} class="active" {% endif %}>Store Locator</a>
+        <a href="/pages/philanthropy" {% if page.handle == 'philanthropy' %} class="active" {% endif %}>Philanthropy</a>
+        {% if shop.customer_accounts_enabled %}
+          {% if customer  %}
+            <a href="/cart" {% if template contains 'cart' %} class="active" {% endif %}>Your Cart ({{cart.item_count}})</a>
+          {% else %}
+            <a href="/account/login" {% if template contains 'login' %} class="active" {% endif %}>Partner Login</a>
           {% endif %}
         {% endif %}
-    </div>
+      </div>
+    {% else %}
+      <h4 class="grp-header__coming-soon">Coming Soon</h4>
+    {% endif %}
     <a href="/" class="grp-header__logo">
       {{ 'grp-logo.svg' | asset_url | img_tag }}
     </a>
