@@ -638,7 +638,6 @@ EG:
 # General Typography
 --------------------------------------------------------------*/
 
-$font-serif: "PT Serif", serif;
 $font-sans: "Maven Pro", sans-serif;
 
 body {
@@ -658,7 +657,7 @@ html {
 h1 {
   font-size: 5rem;
   font-weight: normal;
-  font-family: $font-serif;
+  font-family: $font-sans;
   line-height: 5.5rem;
   color: $black;
   margin-bottom: 10px;
@@ -673,7 +672,7 @@ h1 {
 h2 {
   font-size: 3.8rem;
   font-weight: normal;
-  font-family: $font-serif;
+  font-family: $font-sans;
   line-height: 4.5rem;
   color: $black;
   margin-bottom: 4rem;
@@ -696,7 +695,7 @@ h2 {
 h3 {
   font-size: 2.3rem;
   font-weight: 900;
-  font-family: $font-serif;
+  font-family: $font-sans;
   line-height: 3.8rem;
   color: $black;
   margin-bottom: 20px;
