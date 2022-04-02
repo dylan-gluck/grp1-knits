@@ -829,11 +829,21 @@ body {
   }
 
   &--narrow {
-    max-width: 720px;
+    max-width: 860px;
   }
 
   &--mobile-full-width {
     width: 100%;
+  }
+
+  // Content images never exceed container
+  img {
+    max-width: 100%;
+
+    // Add top margin to paragraphs after images
+    & + p {
+      margin-top: 30px;
+    }
   }
 }
 
@@ -1038,7 +1048,7 @@ body {
       height: 100%;
       background-size: cover;
       background-repeat: no-repeat;
-      background-position: top center;
+      background-position: center top;
 
       video {
         position: absolute;
@@ -1062,9 +1072,9 @@ body {
       }
 
       @media (max-width: $bp-s) {
-        background-position-x: -300px;
+        background-position-x: -480px;
         background-position-y: 0;
-        background-size: 1380px;
+        background-size: auto 100%;
       }
     }
   }
@@ -1219,14 +1229,9 @@ body {
       }
     }
 
-    h3 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      font-weight: 900;
-      color: #fff;
-      background: #000;
-      transform: translate(-50%, -50%);
+    &.grid-12 {
+      width: 100%;
+      margin: 0 auto 30px;
     }
 
     &:hover {

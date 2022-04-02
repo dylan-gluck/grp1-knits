@@ -656,10 +656,16 @@ body {
   max-width: 1200px;
 }
 .grp-container--narrow {
-  max-width: 720px;
+  max-width: 860px;
 }
 .grp-container--mobile-full-width {
   width: 100%;
+}
+.grp-container img {
+  max-width: 100%;
+}
+.grp-container img + p {
+  margin-top: 30px;
 }
 
 .grp-header {
@@ -849,7 +855,7 @@ body {
   height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: top center;
+  background-position: center top;
 }
 .grp-homepage__image .inner video {
   position: absolute;
@@ -875,9 +881,9 @@ body {
 }
 @media (max-width: 790px) {
   .grp-homepage__image .inner {
-    background-position-x: -300px;
+    background-position-x: -480px;
     background-position-y: 0;
-    background-size: 1380px;
+    background-size: auto 100%;
   }
 }
 .grp-homepage__overlay {
@@ -1046,14 +1052,9 @@ body {
     width: 100%;
   }
 }
-.grp-collections__item h3 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-weight: 900;
-  color: #fff;
-  background: #000;
-  transform: translate(-50%, -50%);
+.grp-collections__item.grid-12 {
+  width: 100%;
+  margin: 0 auto 30px;
 }
 .grp-collections__item:hover h3 {
   color: #000;
