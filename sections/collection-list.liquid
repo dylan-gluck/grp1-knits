@@ -1,8 +1,0 @@
-<section class="grp-wrap grp-collections">
-  <div class="grp-collections__grid grp-container">
-    {% for link in linklists.all-collections.links %}
-      {% assign collection = link.object %}
-      {% include 'collection-grid-item' %}
-    {% endfor %}
-  </div>
-</section>
