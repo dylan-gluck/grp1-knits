@@ -1,16 +1,16 @@
 <section class="grp-wrap grp-collections">
   <div class="grp-collections__grid grp-container">
-    {% for link in linklists.all-collections.links %}
-      {% assign collection = link.object %}
-      {% include 'collection-grid-item' %}
-    {% endfor %}
-    <a href="/pages/gobi" class="grp-collections__item grid-12">
-      <h3>GOBI</h3>
-      {{ 'lookbook-gobi.png' | asset_url | img_tag }}
-    </a>
     <a href="/pages/vienna" class="grp-collections__item grid-12">
       <h3>VIENNA</h3>
       {{ 'lookbook-vienna.jpg' | asset_url | img_tag }}
     </a>
+    <a href="/pages/gobi" class="grp-collections__item grid-12">
+      <h3>GOBI</h3>
+      {{ 'lookbook-gobi.png' | asset_url | img_tag }}
+    </a>
+    {% for link in linklists.all-collections.links %}
+      {% assign collection = link.object %}
+      {% include 'collection-grid-item' %}
+    {% endfor %}
   </div>
 </section>
