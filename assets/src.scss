@@ -1639,3 +1639,17 @@ body {
 .shopify-policy__container {
   max-width: 900px !important;
 }
+
+// Homepage Text White Overlay
+body.home {
+  .grp-header__logo img {
+    filter: invert(100%);
+  }
+
+  .grp-header__nav a,
+  .grp-header__hamburger,
+  .grp-homepage h2 span,
+  .grp-homepage .grp-newsletter * {
+    color: #fff;
+  }
+}

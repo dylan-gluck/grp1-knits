@@ -55,7 +55,7 @@
   {{ content_for_header }}
 </head>
 
-<body>
+<body {% if template.name == "index" %}class="home"{% endif %}>
   <header class="grp-wrap grp-header">
     <div class="grp-header__bar"></div>
     <a href="javascript:void(0)" class="grp-header__hamburger">

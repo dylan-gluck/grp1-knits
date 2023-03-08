@@ -1140,7 +1140,7 @@ body {
 }
 @media (max-width: 790px) {
   .grp-product .grp-product-image,
-.grp-product .grp-mobile-image {
+  .grp-product .grp-mobile-image {
     display: none;
   }
 }
@@ -1513,6 +1513,16 @@ body {
 
 .shopify-policy__container {
   max-width: 900px !important;
+}
+
+body.home .grp-header__logo img {
+  filter: invert(100%);
+}
+body.home .grp-header__nav a,
+body.home .grp-header__hamburger,
+body.home .grp-homepage h2 span,
+body.home .grp-homepage .grp-newsletter * {
+  color: #fff;
 }
 
 /*# sourceMappingURL=theme.scss.liquid.map */
