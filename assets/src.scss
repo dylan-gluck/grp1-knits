@@ -1642,6 +1642,10 @@ body {
 
 // Homepage Text White Overlay
 body.home {
+  .grp-header__bar {
+    background: #fff;
+  }
+
   .grp-header__logo img {
     filter: invert(100%);
   }
