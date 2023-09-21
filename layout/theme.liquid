@@ -8,7 +8,7 @@
   <link rel="canonical" href="{{ canonical_url }}">
 
   {% if settings.favicon != blank %}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: '32x32' }}" type="image/png">
   {% endif %}
 
   {%- capture seo_title -%}
@@ -44,9 +44,9 @@
 
   <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
 
-  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" async></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.css"/>
 
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
 
@@ -66,8 +66,8 @@
         <i class="fas fa-times"></i>
       </a>
       <a href="/" {% if template == 'index' %} class="active" {% endif %}>Home</a>
-      <a href="/pages/about" {% if page.handle == 'about' %} class="active" {% endif %}>About</a>
-      <a href="/pages/founder" {% if page.handle == 'founder' %} class="active" {% endif %}>Founder</a>
+      <a href="/pages/about" {% if page.handle == 'about' %} class="active" {% endif %}>Mission</a>
+      <a href="/pages/founder" {% if page.handle == 'founder' %} class="active" {% endif %}>About Us</a>
       <a href="/collections" {% if template contains 'collection' %} class="active" {% endif %} {% if template contains 'product' %} class="active" {% endif %}>Collections</a>
       <a href="/pages/store-locator" {% if template contains 'locator' %} class="active" {% endif %}>Store Locator</a>
       <a href="/pages/philanthropy" {% if page.handle == 'philanthropy' %} class="active" {% endif %}>Philanthropy</a>
@@ -92,6 +92,6 @@
       }
     }
   </script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js" async></script>
 </body>
 </html>

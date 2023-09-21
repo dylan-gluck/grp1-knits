@@ -10,13 +10,14 @@
         <button data-remodal-action="close" class="remodal-confirm grp-size-chart__close">Close</button>
       </div>
       <a href="#size_chart" class="grp-size-chart-link">View Size Chart</a>
+      <h4 style="margin-top: 50px;">(Returning soon)</h4>
     </div>
   </div>
-  <div class="grp-collections__grid grp-container {%if collection.all_products_count == 2%}two-items{%endif%}">
+  {% comment %} <div class="grp-collections__grid grp-container {%if collection.all_products_count == 2%}two-items{%endif%}">
     {% for product in collection.products %}
       {% include 'product-card-grid' %}
     {% endfor %}
-  </div>
+  </div> {% endcomment %}
 </section>
 
 
