@@ -51,7 +51,7 @@
                   </div>
                 </div>
               {% endif %}
-            </td>
+            </th>
             <td data-label="{{ 'customer.order.sku' | t }}">{{ line_item.sku }}</td>
             <td data-label="{{ 'customer.order.price' | t }}">{{ line_item.price | money }}</td>
             <td data-label="{{ 'customer.order.quantity' | t }}">{{ line_item.quantity }}</td>
@@ -61,7 +61,7 @@
         </tbody>
         <tfoot>
           <tr class="responsive-table__row">
-            <th scope="row" colspan="4" class="small--hide">{{ 'customer.order.subtotal' | t }}</td>
+            <th scope="row" colspan="4" class="small--hide">{{ 'customer.order.subtotal' | t }}</th>
             <td data-label="{{ 'customer.order.subtotal' | t }}">{{ order.subtotal_price | money }}</td>
           </tr>
 
